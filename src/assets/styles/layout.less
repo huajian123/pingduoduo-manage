@@ -1,0 +1,120 @@
+body{
+  min-width: 570px;
+}
+img{
+  display: inline-block;
+  width: 100%;
+}
+
+p{
+  margin: 0;
+  padding: 0;
+}
+
+input:focus{
+  outline:none;
+}
+
+a{
+  color: inherit;
+  &:hover{
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+.pagination a:hover{
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6{
+  margin-bottom: 0;
+}
+
+.none{
+  display: none;
+}
+
+
+.full-height{
+  height: 100%;
+}
+
+.ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+.clearfix:after{
+  clear: both;
+  content: '.';
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+.wrap{
+  width: 980px;
+  margin: 0 auto;
+}
+
+.margin-bottom-none{
+  margin-bottom: 0;
+}
+
+.text-left{
+  text-align: left;
+}
+
+.text-right{
+  text-align: right;
+}
+
+
+.collapse {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.operate-text {
+  cursor: pointer;
+  color: #409eff;
+  margin-right: 5px;
+}
+
+
+.normal-wrap{
+  margin: 27px 27px 0;
+  background: #fff;
+  /*列表顶部样式*/
+  .ant-pro-table-toolbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .ant-pro-table-toolbar-title{
+      flex: 1 1;
+      color: rgba(0,0,0,.85);
+      font-size: 16px;
+      line-height: 24px;
+      opacity: .85;
+    }
+    .ant-pro-table-toolbar-option{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .ant-pro-table-toolbar-default-option{
+      .ant-space-item:last-child{
+        margin-right: 5px!important;
+      }
+    }
+  }
+
+  // 表单样式
+  .form-wrap{
+    padding: 24px;
+  }
+}

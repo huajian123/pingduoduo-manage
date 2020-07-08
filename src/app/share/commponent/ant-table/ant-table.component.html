@@ -1,0 +1,30 @@
+<nz-table nzShowPagination
+          [nzFrontPagination]="false"
+          nzSize="small"
+          nzShowSizeChanger nzBordered="true" #basicTable [nzData]="tableData"
+          [nzTotal]="tableConfig.total"
+          [nzPageIndex]="tableConfig.pageIndex"
+          [nzScroll]="{ x: '1100px' }"
+          [nzPageSize]="tableConfig.pageSize"
+          (nzQueryParams)="onQueryParamsChange($event)"
+          (nzPageSizeChange)="onPageSizeChange($event)"
+          [nzLoading]="tableConfig.loading"
+>
+  <thead>
+  <tr>
+    <th [nzRight]="head.fixed" [nzWidth]="head.width + 'px'" *ngFor="let head of tableConfig.headers">{{head.title}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of tableData">
+    <td *ngFor="let head of tableConfig.headers" [nzRight]="head.fixed" >
+      <ng-container *ngIf="head.tdTemplate;else roleTpl">
+        <ng-container *ngTemplateOutlet="head.tdTemplate;context:row"></ng-container>
+      </ng-container>
+      <ng-template #roleTpl>
+        <ng-container>{{row[head.field]}}</ng-container>
+      </ng-template>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

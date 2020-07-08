@@ -1,0 +1,158 @@
+.layout {
+  min-height: 100vh;
+}
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+
+.side-shadow{
+  position: relative;
+  z-index: 10;
+  min-height: 100%;
+  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+}
+
+.logo {
+  height: 64px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0 24px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .3s;
+  margin-bottom: 16px;
+  a {
+    display: flex;
+    align-items: center;
+    height: 64px;
+    text-decoration: none;
+    &:visited,&:hover,&:active {
+      text-decoration: none;
+    }
+    img {
+      width: 32px;
+    }
+
+    h1 {
+      display: inline-block;
+      margin: 0 0 0 12px;
+      color: #1890ff;
+      font-weight: 600;
+      font-size: 20px;
+      vertical-align: middle;
+      animation: all;
+      animation-duration: .3s;
+      &.show{
+        opacity: 1;
+        transition: opacity 2s;
+      }
+      &.hidden{
+        opacity: 0;
+        transition: opacity 0s;
+      }
+    }
+  }
+
+}
+
+
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+
+nz-content {
+  margin: 0 16px;
+}
+
+nz-breadcrumb {
+  margin: 16px 0;
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  min-height: 360px;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+.head-nav{
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+
+  .user{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: all .3s;
+    img{
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+.btn-hover{
+  transition: all 0.3s;
+}
+
+.btn-hover:hover{
+  background: rgba(0,0,0,.025);
+}
+
+.default-context{
+  margin: 0;
+  padding: 0;
+}
+
+
+.bst-header-wrap {
+  margin-right: 8px;
+}
+
+.bst-header-icon {
+  cursor: pointer;
+  padding: 0 12px;
+  display: inline-block;
+  transition: all .3s;
+  height: 100%;
+  font-size: 16px;
+}
+
+.bst-header-icon:hover {
+  background-color: rgba(0, 0, 0, .025);
+}
+
+.bst-badge {
+  padding: 8px 2px;
+}
+
+/**
+ * 个人设置
+*/
+.bst-header_usr_menu {
+  width: 150px;
+
+  &_icon {
+    margin-right: 8px
+  }
+}

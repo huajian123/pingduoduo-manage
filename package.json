@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4202 --host localhost",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -19,7 +19,9 @@
     "@angular/platform-browser": "~9.1.11",
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
+    "minireset.css": "0.0.6",
     "ng-zorro-antd": "^9.2.2",
+    "ngx-quicklink": "^0.2.3",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

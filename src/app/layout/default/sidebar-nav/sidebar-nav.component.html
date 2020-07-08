@@ -1,0 +1,35 @@
+
+<ul nz-menu nzInlineCollapsed [nzInlineCollapsed]="isCollapsed" nzTheme="light" nzMode="inline">
+  <ng-container *ngTemplateOutlet="menuTpl;context:{$implicit: menus}"></ng-container>
+  <ng-template #menuTpl let-menus>
+    <ng-container *ngFor="let menu of menus">
+      <li nz-menu-item [nzSelected]="menu.selected" *ngIf="!menu.children||menu.children.length===0" >
+        <a [routerLink]="[menu.path]">
+          <i nz-icon [nzType]="menu.icon"></i>
+          <span>{{menu.title}}</span>
+        </a>
+      </li>
+      <li *ngIf="menu.children&&menu.children.length>0" nz-submenu [(nzOpen)]="menu.open" [nzTitle]="menu.title" [nzIcon]="menu.icon">
+        <ul>
+          <ng-container *ngFor="let menuSecond of menu.children">
+            <li nz-menu-item [nzSelected]="menuSecond.selected" *ngIf="!menuSecond.children">
+              <a [routerLink]="[menuSecond.path]">
+                <i nz-icon [nzType]="menuSecond.icon"></i>
+                <span>{{menuSecond.title}}</span>
+              </a>
+            </li>
+            <li *ngIf="menuSecond.children&&menuSecond.children.length>0" nz-submenu  [(nzOpen)]="menuSecond.open" [nzTitle]="menuSecond.title" [nzIcon]="menuSecond.icon">
+              <ul>
+                <li nz-menu-item [nzSelected]="menuThird.selected" *ngFor="let menuThird of menuSecond.children">
+                  <a [routerLink]="[menuThird.path]">
+                    <span>{{menuThird.title}}</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+    </ng-container>
+  </ng-template>
+</ul>

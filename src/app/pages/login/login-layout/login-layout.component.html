@@ -12,7 +12,7 @@
       <nz-form-item>
         <nz-form-control nzErrorTip="请输入用户名!">
           <nz-input-group nzPrefixIcon="lock">
-            <input type="text" nz-input formControlName="account" placeholder="用户名" />
+            <input type="text" nz-input formControlName="name" placeholder="用户名" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
@@ -25,9 +25,9 @@
       </nz-form-item>
       <div nz-row class="login-form-margin">
         <div nz-col [nzSpan]="12">
-          <label nz-checkbox formControlName="remember">
+        <!--  <label nz-checkbox formControlName="remember">
             <span>记住密码</span>
-          </label>
+          </label>-->
         </div>
         <div nz-col [nzSpan]="12">
           <a class="login-form-forgot">忘记密码</a>

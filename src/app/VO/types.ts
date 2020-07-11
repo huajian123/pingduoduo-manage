@@ -25,3 +25,8 @@ export class SearchCommonVO<T> {
   pageSize: number;
   filters?: T;
 }
+
+export class GoBackParam {
+  refesh: boolean;
+  pageNo?: number;
+}

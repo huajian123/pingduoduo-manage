@@ -17,16 +17,17 @@ export class LoginLayoutComponent implements OnInit {
 
   submitForm(): void {
    // this.router.navigateByUrl('hazard');
-  /*  Object.keys(this.validateForm.controls).forEach(key => {
+    Object.keys(this.validateForm.controls).forEach(key => {
       this.validateForm.controls[key].markAsDirty();
       this.validateForm.controls[key].updateValueAndValidity();
-    });*/
+    });
+    if (this.validateForm.invalid) {
+      return;
+    }
     const param = this.validateForm.getRawValue();
     this.dataService.login(param).subscribe((res) => {
-      console.log(res);
+      this.router.navigateByUrl('hazard');
     });
-    // this.router.navigateByUrl('hazard');
-
   }
 
 

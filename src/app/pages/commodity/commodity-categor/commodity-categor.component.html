@@ -1,0 +1,81 @@
+<!--头部版块-->
+<nz-page-header class="site-page-header" nzTitle="查询表格">
+  <nz-breadcrumb nz-page-header-breadcrumb>
+    <nz-breadcrumb-item>首页</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a>列表页</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>查询表格</nz-breadcrumb-item>
+  </nz-breadcrumb>
+</nz-page-header>
+
+<div class="normal-wrap">
+  <!--搜索板块-->
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24}">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzFor]="">规则名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="请输入" formControlName="ruleName"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzFor]="">描述</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="请输入" formControlName="desc"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <ng-container *ngIf="!isCollapse">
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzFor]="">服务调用次数</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入" formControlName="desc"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzFor]="">状态</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入" formControlName="desc"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-label [nzFor]="">上次调度时间</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="请输入" formControlName="ruleName"/>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </ng-container>
+
+      <div nz-col [nzSpan]="8" class="text-right">
+        <button nz-button [nzType]="'primary'"><i nz-icon nzType="search"></i>搜索</button>
+        <button nz-button (click)="resetForm()"><i nz-icon nzType="close-circle" nzTheme="outline"></i>重置</button>
+        <a class="collapse operate-text" (click)="toggleCollapse()">
+          展开
+          <i nz-icon [nzType]="isCollapse ? 'down' : 'up'"></i>
+        </a>
+      </div>
+    </div>
+  </form>
+
+  <app-card-table-wrap [needAddBtn]="true" (add)="add()">
+    <app-ant-table (changePageSize)="changePageSize($event)" (changePageNum)="getDataList($event)" [tableConfig]="tableConfig" [tableData]="dataList"></app-ant-table>
+    <ng-template #operationTpl let-name="name">
+      <span class="operate-text" (click)="check(name)">查看</span>
+      <span class="operate-text">上报</span>
+      <span class="operate-text">审核</span>
+      <span class="operate-text">准备执行</span>
+    </ng-template>
+  </app-card-table-wrap>
+</div>
+
+

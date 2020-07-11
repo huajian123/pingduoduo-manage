@@ -95,6 +95,22 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
         },
       ]
     },
+    {
+      title: '商品管理',
+      icon: 'mail',
+      open: false,
+      selected: false,
+      children: [
+        {
+          title: '商品种类',
+          icon: 'mail',
+          open: false,
+          selected: false,
+          path: '/hazard/commodity/commodity-category',
+        },
+      ]
+    },
+
   ];
   subs: Array<Subscription> = [];
 

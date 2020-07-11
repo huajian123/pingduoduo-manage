@@ -19,6 +19,7 @@ const routes: Routes = [
       {path: 'forms', loadChildren: () => import('./pages/forms/forms.module').then(m => m.FormsModule)},
       // { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘', titleI18n: 'dashboard' } },
       {path: 'list', loadChildren: () => import('./pages/list/list.module').then(m => m.ListModule)},
+      {path: 'commodity', loadChildren: () => import('./pages/commodity/commodity.module').then(m => m.CommodityModule)},
     ],
   },
   {path: '', redirectTo: '/login', pathMatch: 'full'},

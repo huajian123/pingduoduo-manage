@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyTableConfig} from "../../../share/commponent/ant-table/ant-table.component";
 import {NzTableQueryParams} from "ng-zorro-antd";
 import {SearchCommonVO} from "../../../VO/types";
@@ -76,8 +76,8 @@ export class CommodityCategoryComponent implements OnInit {
       desc: [null],
     });
 
-    this.addEditForm=this.fb.group({
-      name: [null],
+    this.addEditForm = this.fb.group({
+      name: [null, [Validators.required]],
     });
   }
 
@@ -105,11 +105,18 @@ export class CommodityCategoryComponent implements OnInit {
   }
 
   add() {
+    this.addEditForm.reset();
     this.htmlModalVisible = true;
   }
 
-  handleOk(){
-
+  handleOk() {
+    Object.keys(this.addEditForm.controls).forEach(key => {
+      this.addEditForm.controls[key].markAsDirty();
+      this.addEditForm.controls[key].updateValueAndValidity();
+    });
+    if (this.addEditForm.invalid) {
+      return;
+    }
   }
 
   ngOnInit(): void {

@@ -4,6 +4,10 @@ import {MyTableConfig} from "../../../share/commponent/ant-table/ant-table.compo
 import {ProjectListService, ProjectModel} from "../../../services/biz-services/project-list.service";
 import {NzTableQueryParams} from "ng-zorro-antd";
 import {SearchCommonVO} from "../../../VO/types";
+import {
+  CommodityCategoryService,
+  CommodityModel
+} from "../../../services/biz-services/commodity/commodity-category.service";
 
 @Component({
   selector: 'app-commodity-categor',
@@ -16,10 +20,10 @@ export class CommodityCategoryComponent implements OnInit {
   tableConfig: MyTableConfig;
   isCollapse: boolean;
   @ViewChild('operationTpl', {static: true}) operationTpl: TemplateRef<any>;
-  dataList: ProjectModel[];
+  dataList: CommodityModel[];
 
 
-  constructor(private fb: FormBuilder, private dataService: ProjectListService) {
+  constructor(private fb: FormBuilder, private dataService: CommodityCategoryService) {
     this.isCollapse = true;
     this.dataList = [];
   }
@@ -33,97 +37,9 @@ export class CommodityCategoryComponent implements OnInit {
     this.tableConfig = {
       headers: [
         {
-          title: '年龄',
+          title: '种类名称',
           width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        }, {
-          title: '年龄',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '年龄',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        }, {
-          title: '年龄',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName'
-        }, {
-          title: '年龄',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-        },
-        {
-          title: '名称',
-          width: 100,
-          field: 'productName',
-          fixed: true
+          field: 'name',
         },
         {
           title: '操作',
@@ -172,23 +88,15 @@ export class CommodityCategoryComponent implements OnInit {
       pageNum: e?.pageIndex || this.tableConfig.pageIndex
     };
     this.dataList = [];
-    this.tableConfig.loading = false;
-    this.dataList = [
-      {
-        productName: "string",
-        casNo: "string",
-      }
-    ]
-    /*   this.dataService.getProjectlist(params).subscribe((data) => {
-         const {list, total, pageNum} = data;
-         this.dataList = list;
-         console.log(this.dataList);
-         this.tableConfig.total = total;
-         this.tableConfig.pageIndex = pageNum;
-         this.tableConfig.loading = false;
-       },()=>{
-         this.tableConfig.loading = false;
-       });*/
+    this.dataService.getCommdityCategoryList(params).subscribe((data) => {
+      const {list, total, pageNum} = data;
+      this.dataList = list;
+      this.tableConfig.total = total;
+      this.tableConfig.pageIndex = pageNum;
+      this.tableConfig.loading = false;
+    }, () => {
+      this.tableConfig.loading = false;
+    });
   }
 
   add() {
@@ -198,5 +106,6 @@ export class CommodityCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.initTable();
+    this.tableConfig.loading = true;
   }
 }

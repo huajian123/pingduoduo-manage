@@ -1,7 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MyTableConfig} from "../../../share/commponent/ant-table/ant-table.component";
-import {ProjectListService, ProjectModel} from "../../../services/biz-services/project-list.service";
 import {NzTableQueryParams} from "ng-zorro-antd";
 import {SearchCommonVO} from "../../../VO/types";
 import {
@@ -17,15 +16,17 @@ import {
 export class CommodityCategoryComponent implements OnInit {
 
   validateForm: FormGroup;
+  addEditForm: FormGroup;
   tableConfig: MyTableConfig;
   isCollapse: boolean;
   @ViewChild('operationTpl', {static: true}) operationTpl: TemplateRef<any>;
   dataList: CommodityModel[];
-
+  htmlModalVisible: boolean;
 
   constructor(private fb: FormBuilder, private dataService: CommodityCategoryService) {
     this.isCollapse = true;
     this.dataList = [];
+    this.htmlModalVisible = false;
   }
 
 
@@ -74,6 +75,10 @@ export class CommodityCategoryComponent implements OnInit {
       ruleName: [null],
       desc: [null],
     });
+
+    this.addEditForm=this.fb.group({
+      name: [null],
+    });
   }
 
   // 修改一页几条
@@ -100,7 +105,11 @@ export class CommodityCategoryComponent implements OnInit {
   }
 
   add() {
-    console.log(123);
+    this.htmlModalVisible = true;
+  }
+
+  handleOk(){
+
   }
 
   ngOnInit(): void {

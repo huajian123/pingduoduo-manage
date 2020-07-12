@@ -9,7 +9,10 @@
           (nzQueryParams)="onQueryParamsChange($event)"
           (nzPageSizeChange)="onPageSizeChange($event)"
           [nzLoading]="tableConfig.loading"
+          nzShowQuickJumper
+          [nzShowTotal]="rangeTemplate"
 >
+  <ng-template #rangeTemplate let-range="range" let-total> {{ range[0] }}-{{ range[1] }} 共 {{ total }} 条 </ng-template>
   <thead>
   <tr>
     <th [nzRight]="head.fixed" [nzWidth]="head.width + 'px'" *ngFor="let head of tableConfig.headers">{{head.title}}</th>

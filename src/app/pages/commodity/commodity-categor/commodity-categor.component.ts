@@ -117,6 +117,11 @@ export class CommodityCategoryComponent implements OnInit {
     if (this.addEditForm.invalid) {
       return;
     }
+    const param = this.addEditForm.getRawValue();
+    this.dataService.addCommdityCategory(param).subscribe(() => {
+      this.getDataList()
+      this.htmlModalVisible = false;
+    })
   }
 
   ngOnInit(): void {

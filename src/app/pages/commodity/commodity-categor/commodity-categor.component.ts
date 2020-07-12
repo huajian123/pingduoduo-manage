@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyTableConfig} from "../../../share/commponent/ant-table/ant-table.component";
-import {NzTableQueryParams} from "ng-zorro-antd";
+import {NzModalService, NzTableQueryParams} from "ng-zorro-antd";
 import {SearchCommonVO} from "../../../VO/types";
 import {
   CommodityCategoryService,
@@ -23,15 +23,25 @@ export class CommodityCategoryComponent implements OnInit {
   dataList: CommodityModel[];
   htmlModalVisible: boolean;
 
-  constructor(private fb: FormBuilder, private dataService: CommodityCategoryService) {
+  constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService) {
     this.isCollapse = true;
     this.dataList = [];
     this.htmlModalVisible = false;
   }
 
 
-  check(name) {
-    console.log(name);
+  del(id) {
+    this.modal.confirm({
+      nzTitle: '确定删除吗？',
+      nzOnOk: () => {
+        this.dataService.delCommdityCategory(id).subscribe(()=>this.getDataList())
+      },
+      nzOkText: '确定',
+      nzOnCancel: () => {
+        return;
+      },
+      nzCancelText: '取消',
+    });
   }
 
   private initTable(): void {

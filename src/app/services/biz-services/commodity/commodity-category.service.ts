@@ -29,4 +29,8 @@ export class CommodityCategoryService extends BaseHttp {
     return this.post('/commodity/addCommodityCategory', params, {needSuccessInfo: true});
   }
 
+  public delCommdityCategory(id: number): Observable<any> {
+    return this.post('/commodity/delCommodityCategory', {id: id}, {needSuccessInfo: true});
+  }
+
 }

@@ -17,7 +17,7 @@ export class LoginService extends BaseHttp {
   }
 
   public login(params): Observable<UserModel> {
-    return this.post('/user/login', params, {needSuccessInfo: true});
+    return this.post('/user/login', params);
   }
 
 }

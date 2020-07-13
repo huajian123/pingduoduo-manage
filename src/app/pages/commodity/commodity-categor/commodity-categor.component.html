@@ -72,6 +72,7 @@
                    [tableConfig]="tableConfig" [tableData]="dataList"></app-ant-table>
     <ng-template #operationTpl let-id="id">
       <span class="operate-text" (click)="del(id)">删除</span>
+      <span class="operate-text" (click)="update(id)">修改</span>
     </ng-template>
   </app-card-table-wrap>
 </div>

@@ -22,19 +22,29 @@ export class CommodityCategoryComponent implements OnInit {
   @ViewChild('operationTpl', {static: true}) operationTpl: TemplateRef<any>;
   dataList: CommodityModel[];
   htmlModalVisible: boolean;
+  itemId: number;
 
   constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService) {
     this.isCollapse = true;
     this.dataList = [];
     this.htmlModalVisible = false;
+    this.itemId = null;
   }
 
+
+  update(id) {
+    this.itemId = id;
+    this.dataService.getCommodityCategoryDetail(id).subscribe((res) => {
+      this.addEditForm.get("name").setValue(res.name);
+    })
+    this.htmlModalVisible = true;
+  }
 
   del(id) {
     this.modal.confirm({
       nzTitle: '确定删除吗？',
       nzOnOk: () => {
-        this.dataService.delCommdityCategory(id).subscribe(()=>this.getDataList())
+        this.dataService.delCommdityCategory(id).subscribe(() => this.getDataList())
       },
       nzOkText: '确定',
       nzOnCancel: () => {
@@ -115,6 +125,7 @@ export class CommodityCategoryComponent implements OnInit {
   }
 
   add() {
+    this.itemId = null;
     this.addEditForm.reset();
     this.htmlModalVisible = true;
   }
@@ -128,7 +139,15 @@ export class CommodityCategoryComponent implements OnInit {
       return;
     }
     const param = this.addEditForm.getRawValue();
-    this.dataService.addCommdityCategory(param).subscribe(() => {
+
+    let submitHandel = null;
+    if (!this.itemId) {
+      submitHandel = this.dataService.addCommdityCategory(param)
+    } else {
+      param.id = this.itemId;
+      submitHandel = this.dataService.updateCommdityCategory(param)
+    }
+    submitHandel.subscribe(() => {
       this.getDataList()
       this.htmlModalVisible = false;
     })

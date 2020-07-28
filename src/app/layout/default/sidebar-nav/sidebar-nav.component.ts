@@ -23,79 +23,6 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
   routerPath = '';
   menus: Menu[] = [
     {
-      title: 'Dashboard',
-      icon: 'mail',
-      open: false,
-      selected: false,
-      children: [
-        {
-          title: '分析页',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/dashboard/analysis',
-        },
-        {
-          title: '监控页',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/dashboard/monitor',
-        },
-        {
-          title: '工作台',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/dashboard/workbench',
-        }
-      ]
-    },
-    {
-      title: '表单页',
-      icon: 'mail',
-      open: false,
-      selected: false,
-      children: [
-        {
-          title: '基础表单',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/forms/basis-forms',
-        },
-        {
-          title: '分步表单',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/forms/steps-forms',
-        },
-        {
-          title: '高级表单',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/forms/advanced-forms',
-        }
-      ]
-    },
-    {
-      title: '列表页',
-      icon: 'mail',
-      open: false,
-      selected: false,
-      children: [
-        {
-          title: '查询表格',
-          icon: 'mail',
-          open: false,
-          selected: false,
-          path: '/hazard/list/search-table',
-        },
-      ]
-    },
-    {
       title: '商品管理',
       icon: 'mail',
       open: false,
@@ -106,11 +33,10 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
           icon: 'mail',
           open: false,
           selected: false,
-          path: '/hazard/commodity/commodity-category',
+          path: '/hazard/commodity-manage/commodity-category',
         },
       ]
     },
-
   ];
   subs: Array<Subscription> = [];
 
@@ -144,12 +70,17 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
   }
 
   clickMenuItem() {
+    if (!this.menus) {
+      return;
+    }
+    const index = this.routerPath.indexOf('?') === -1 ? this.routerPath.length : this.routerPath.indexOf('?');
+    const routePath = this.routerPath.substring(0, index);
     for (const item of this.menus) {
       item.open = false;
       item.selected = false;
       // 一级菜单
       if (!item.children || item.children.length === 0) {
-        if (item.path === this.routerPath) {
+        if (item.path === routePath) {
           item.selected = true;
         }
         continue;
@@ -159,7 +90,7 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
         subItem.selected = false;
         subItem.open = false;
         if (!subItem.children || subItem.children?.length === 0) {
-          if (subItem.path === this.routerPath) {
+          if (subItem.path === routePath) {
             item.open = true;
             item.selected = true;
             subItem.selected = true;
@@ -168,7 +99,7 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
           continue;
         }
         for (const thirdItem of subItem.children) {
-          if (thirdItem.path === this.routerPath) {
+          if (thirdItem.path === routePath) {
             item.open = true;
             item.selected = true;
             subItem.selected = true;
@@ -182,6 +113,14 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  // 改变当前菜单展示状态
+  changeOpen(currentMenu, allMenu) {
+    allMenu.forEach((item) => {
+      item.open = false;
+    });
+    currentMenu.open = true;
   }
 
 

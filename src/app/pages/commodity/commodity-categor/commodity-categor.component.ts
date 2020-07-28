@@ -23,14 +23,20 @@ export class CommodityCategoryComponent implements OnInit {
   dataList: CommodityModel[];
   htmlModalVisible: boolean;
   itemId: number;
+  checkedCashArray: any[];
 
   constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService) {
     this.isCollapse = true;
     this.dataList = [];
     this.htmlModalVisible = false;
     this.itemId = null;
+    this.checkedCashArray = [];
   }
 
+
+  selectedChecked(e) {
+    console.log(e);
+  }
 
   update(id) {
     this.itemId = id;
@@ -73,6 +79,7 @@ export class CommodityCategoryComponent implements OnInit {
       loading: false,
       pageSize: 10,
       pageIndex: 1,
+      showCheckbox: true,
     };
   }
 

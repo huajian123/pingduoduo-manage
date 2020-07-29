@@ -30,9 +30,10 @@ export interface MyTableConfig {
 })
 export class AntTableComponent implements OnInit, OnChanges {
   _dataList: any[];
+  // 缓存当前页面checkbox选中的值
   checkedDataArray: any[];
-
-  @Input() checkedCashArray: any[];
+  // 从业务组件中传入的缓存的已经选中的checkbox数据数组
+  @Input() checkedCashArrayFromComment: any[];
 
   @Input()
   set tableData(value: any[]) {
@@ -60,7 +61,7 @@ export class AntTableComponent implements OnInit, OnChanges {
     this.allChecked = false;
     this.checkedDataArray = [];
     this.selectedChange = new EventEmitter<any[]>();
-    this.checkedCashArray = [];
+    this.checkedCashArrayFromComment = [];
   }
 
 
@@ -83,55 +84,48 @@ export class AntTableComponent implements OnInit, OnChanges {
   }
 
 
-  getCheckedDataArray(dataItem) {
-    const index = this.checkedCashArray.findIndex((item) => {
-      return item.id === dataItem.id;
-    })
-    if (index !== -1) {
-      if (dataItem['_checked'] !== true) {
-        this.checkedCashArray.splice(index, 1);
-      }
-    }else{
-      this.checkedCashArray.push(dataItem);
-    }
-    /*   this.checkedDataArray.push(dataItem);
-       this.checkedDataArray = this.checkedDataArray.filter((item) => item['_checked']);
-       const hash = {};
-       this.checkedDataArray = this.checkedDataArray.reduce((preVal, curVal) => {
-         if (!hash[curVal.id]) {
-           hash[curVal.id] = true && preVal.push(curVal);
-         }
-         return preVal;
-       }, []);*/
-  }
-
   public checkRowSingle(isChecked: boolean, selectIndex: number) {
-     this._dataList[selectIndex]['_checked'] = isChecked;
-     this.getCheckedDataArray(this._dataList[selectIndex]);
-     console.log(this.checkedCashArray);
-     this.selectedChange.emit(this.checkedDataArray);
-     this.refreshStatus();
+    this._dataList[selectIndex]['_checked']=isChecked;
+    const index = this.checkedCashArrayFromComment.findIndex((cashItem) => cashItem.id === this._dataList[selectIndex].id)
+    if(isChecked){
+      if (index === -1) {
+        this.checkedCashArrayFromComment.push(this._dataList[selectIndex]);
+      }
+    }else {
+      if (index !== -1) {
+        this.checkedCashArrayFromComment.splice(index, 1);
+      }
+    }
+    this.selectedChange.emit(this.checkedCashArrayFromComment);
+    this.refreshStatus();
   }
 
   onAllChecked(isChecked: boolean): void {
-   /* this._dataList.forEach(item => {
+    this._dataList.forEach((item) => {
       item['_checked'] = isChecked;
-      this.getCheckedDataArray(item);
-    });*/
-     this._dataList.forEach(item => {
-       item['_checked'] = isChecked;
-       this.getCheckedDataArray(item);
-     });
-     this.selectedChange.emit(this.checkedDataArray);
-     this.refreshStatus();
-
+      const index = this.checkedCashArrayFromComment.findIndex((cashItem) => cashItem.id === item.id)
+      if (isChecked) {
+        if (index === -1) {
+          this.checkedCashArrayFromComment.push(item);
+        }
+      } else {
+        if (index !== -1) {
+          this.checkedCashArrayFromComment.splice(index, 1);
+        }
+      }
+    });
+    this.selectedChange.emit(this.checkedCashArrayFromComment);
   }
-
-  ngOnInit(): void {
-  }
-
 
   refreshStatus() {
+    this._dataList.forEach((item) => {
+      const index = this.checkedCashArrayFromComment.findIndex((cashItem) => {
+        return item.id === cashItem.id;
+      })
+      if (index !== -1) {
+        item['_checked'] = true;
+      }
+    });
     let allChecked = this._dataList.length > 0 && this._dataList.every((item) => {
       return item['_checked'] === true
     })
@@ -140,29 +134,14 @@ export class AntTableComponent implements OnInit, OnChanges {
     this.indeterminate = !allChecked && !allUnChecked;
   }
 
-  isCheck(cashArray: any[], dataArray: any[]) {
-    dataArray.forEach((dataItem) => {
-      if (cashArray.findIndex((item) => item.id === dataItem.id) !== -1) {
-        dataItem['_checked'] = true;
-      }
-    })
-    this.refreshStatus();
+  ngOnInit(): void {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['checkedCashArray']) {
-      this.checkedDataArray = [...changes['checkedCashArray'].currentValue];
-      this.isCheck(this.checkedDataArray, this._dataList);
+    if (changes['checkedCashArrayFromComment']) {
+      this.checkedDataArray = [...changes['checkedCashArrayFromComment'].currentValue];
+      this.refreshStatus();
     }
-
-
-    /* for (let propName in changes) {
-       console.log(propName);
-
-       // let chng = changes[propName];
-       // let cur  = JSON.stringify(chng.currentValue);
-       // let prev = JSON.stringify(chng.previousValue);
-     }*/
   }
 
 

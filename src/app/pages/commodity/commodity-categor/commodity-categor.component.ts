@@ -23,6 +23,7 @@ export class CommodityCategoryComponent implements OnInit {
   dataList: CommodityModel[];
   htmlModalVisible: boolean;
   itemId: number;
+  // 缓存已经选中的checkbox每一项
   checkedCashArray: any[];
 
   constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService) {
@@ -35,8 +36,7 @@ export class CommodityCategoryComponent implements OnInit {
 
 
   selectedChecked(e) {
-    this.checkedCashArray = [...e];
-    console.log(this.checkedCashArray);
+    this.checkedCashArray = [...e]
   }
 
   update(id) {
@@ -127,7 +127,7 @@ export class CommodityCategoryComponent implements OnInit {
       this.tableConfig.total = total;
       this.tableConfig.pageIndex = pageNum;
       this.tableConfig.loading = false;
-      this.checkedCashArray=[...this.checkedCashArray];
+      this.checkedCashArray = [...this.checkedCashArray];
 
     }, () => {
       this.tableConfig.loading = false;

@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MyTableConfig} from "../../../share/commponent/ant-table/ant-table.component";
-import {NzModalService, NzTableQueryParams} from "ng-zorro-antd";
+import {NzMessageService, NzModalService, NzTableQueryParams} from "ng-zorro-antd";
 import {SearchCommonVO} from "../../../VO/types";
 import {
   CommodityCategoryService,
@@ -27,7 +27,7 @@ export class CommodityCategoryComponent implements OnInit {
   // 缓存已经选中的checkbox每一项
   checkedCashArray: any[];
 
-  constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService) {
+  constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService, private message: NzMessageService) {
     this.isCollapse = true;
     this.dataList = [];
     this.htmlModalVisible = false;
@@ -92,6 +92,10 @@ export class CommodityCategoryComponent implements OnInit {
   /*展开*/
   toggleCollapse(): void {
     this.isCollapse = !this.isCollapse;
+  }
+
+
+  batchDel() {
   }
 
   /*新增*/

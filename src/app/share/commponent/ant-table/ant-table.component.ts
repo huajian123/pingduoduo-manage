@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef} from '@angular/core';
 import {NzTableQueryParams} from 'ng-zorro-antd';
 
 export interface TableHeader {
@@ -28,7 +28,7 @@ export interface MyTableConfig {
   templateUrl: './ant-table.component.html',
   styleUrls: ['./ant-table.component.less']
 })
-export class AntTableComponent implements OnInit {
+export class AntTableComponent implements OnInit, OnChanges {
   _dataList: any[];
   checkedDataArray: any[];
 
@@ -53,11 +53,11 @@ export class AntTableComponent implements OnInit {
   @Output() changePageSize = new EventEmitter<number>();
   @Output() selectedChange: EventEmitter<any[]>;
   indeterminate: boolean;
-  checked: boolean;
+  allChecked: boolean;
 
   constructor() {
-    this.indeterminate = true;
-    this.checked = false;
+    this.indeterminate = false;
+    this.allChecked = false;
     this.checkedDataArray = [];
     this.selectedChange = new EventEmitter<any[]>();
     this.checkedCashArray = [];
@@ -83,38 +83,87 @@ export class AntTableComponent implements OnInit {
   }
 
 
-
   getCheckedDataArray(dataItem) {
-    this.checkedDataArray.push(dataItem);
-    this.checkedDataArray = this.checkedDataArray.filter((item) => item['_checked']);
-    const hash = {};
-    this.checkedDataArray = this.checkedDataArray.reduce((preVal, curVal) => {
-      if (!hash[curVal.id]) {
-        hash[curVal.id] = true && preVal.push(curVal);
+    const index = this.checkedCashArray.findIndex((item) => {
+      return item.id === dataItem.id;
+    })
+    if (index !== -1) {
+      if (dataItem['_checked'] !== true) {
+        this.checkedCashArray.splice(index, 1);
       }
-      return preVal;
-    }, []);
+    }else{
+      this.checkedCashArray.push(dataItem);
+    }
+    /*   this.checkedDataArray.push(dataItem);
+       this.checkedDataArray = this.checkedDataArray.filter((item) => item['_checked']);
+       const hash = {};
+       this.checkedDataArray = this.checkedDataArray.reduce((preVal, curVal) => {
+         if (!hash[curVal.id]) {
+           hash[curVal.id] = true && preVal.push(curVal);
+         }
+         return preVal;
+       }, []);*/
   }
 
   public checkRowSingle(isChecked: boolean, selectIndex: number) {
-    console.log(selectIndex);
-    console.log(isChecked);
-    console.log(this._dataList);
-    this._dataList[selectIndex]['_checked'] = isChecked;
-    this.getCheckedDataArray(this._dataList[selectIndex]);
-    this.selectedChange.emit(this.checkedDataArray);
-    console.log(this.checkedDataArray);
+     this._dataList[selectIndex]['_checked'] = isChecked;
+     this.getCheckedDataArray(this._dataList[selectIndex]);
+     console.log(this.checkedCashArray);
+     this.selectedChange.emit(this.checkedDataArray);
+     this.refreshStatus();
   }
 
   onAllChecked(isChecked: boolean): void {
-    this._dataList.forEach(item => {
+   /* this._dataList.forEach(item => {
       item['_checked'] = isChecked;
       this.getCheckedDataArray(item);
-    });
-    this.selectedChange.emit(this.checkedDataArray);
-    console.log(this.checkedDataArray);
+    });*/
+     this._dataList.forEach(item => {
+       item['_checked'] = isChecked;
+       this.getCheckedDataArray(item);
+     });
+     this.selectedChange.emit(this.checkedDataArray);
+     this.refreshStatus();
+
   }
 
   ngOnInit(): void {
   }
+
+
+  refreshStatus() {
+    let allChecked = this._dataList.length > 0 && this._dataList.every((item) => {
+      return item['_checked'] === true
+    })
+    let allUnChecked = this._dataList.every(item => item['_checked'] !== true)
+    this.allChecked = allChecked;
+    this.indeterminate = !allChecked && !allUnChecked;
+  }
+
+  isCheck(cashArray: any[], dataArray: any[]) {
+    dataArray.forEach((dataItem) => {
+      if (cashArray.findIndex((item) => item.id === dataItem.id) !== -1) {
+        dataItem['_checked'] = true;
+      }
+    })
+    this.refreshStatus();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['checkedCashArray']) {
+      this.checkedDataArray = [...changes['checkedCashArray'].currentValue];
+      this.isCheck(this.checkedDataArray, this._dataList);
+    }
+
+
+    /* for (let propName in changes) {
+       console.log(propName);
+
+       // let chng = changes[propName];
+       // let cur  = JSON.stringify(chng.currentValue);
+       // let prev = JSON.stringify(chng.previousValue);
+     }*/
+  }
+
+
 }

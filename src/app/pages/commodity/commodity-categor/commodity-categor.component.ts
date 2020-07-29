@@ -35,7 +35,8 @@ export class CommodityCategoryComponent implements OnInit {
 
 
   selectedChecked(e) {
-    console.log(e);
+    this.checkedCashArray = [...e];
+    console.log(this.checkedCashArray);
   }
 
   update(id) {
@@ -126,6 +127,8 @@ export class CommodityCategoryComponent implements OnInit {
       this.tableConfig.total = total;
       this.tableConfig.pageIndex = pageNum;
       this.tableConfig.loading = false;
+      this.checkedCashArray=[...this.checkedCashArray];
+
     }, () => {
       this.tableConfig.loading = false;
     });

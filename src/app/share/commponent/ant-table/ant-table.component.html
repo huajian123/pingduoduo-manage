@@ -15,7 +15,7 @@
   <ng-template #rangeTemplate let-range="range" let-total> {{ range[0] }}-{{ range[1] }} 共 {{ total }} 条 </ng-template>
   <thead>
   <tr>
-    <th [nzLeft]="true" [nzIndeterminate]="false" *ngIf="tableConfig.showCheckbox" (nzCheckedChange)="onAllChecked($event)" [nzWidth]="'50px'" [nzChecked]="checked"></th>
+    <th [nzLeft]="true" [nzIndeterminate]="indeterminate" *ngIf="tableConfig.showCheckbox" (nzCheckedChange)="onAllChecked($event)" [nzWidth]="'10px'" [nzChecked]="allChecked"></th>
     <th [nzWidth]="head.width + 'px'" *ngFor="let head of tableConfig.headers;trackBy:trackByTableHead;let headIndex=index" [nzRight]="!!head.fixed">{{head.title}}</th>
   </tr>
   </thead>

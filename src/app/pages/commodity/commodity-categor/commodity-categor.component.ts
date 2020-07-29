@@ -7,6 +7,7 @@ import {
   CommodityCategoryService,
   CommodityModel
 } from "../../../services/biz-services/commodity/commodity-category.service";
+import {SearchListBtnConfig} from "../../../VO/model";
 
 @Component({
   selector: 'app-commodity-categor',
@@ -14,7 +15,7 @@ import {
   styleUrls: ['./commodity-categor.component.less']
 })
 export class CommodityCategoryComponent implements OnInit {
-
+  needAddBtnConfig: SearchListBtnConfig;
   validateForm: FormGroup;
   addEditForm: FormGroup;
   tableConfig: MyTableConfig;
@@ -32,6 +33,10 @@ export class CommodityCategoryComponent implements OnInit {
     this.htmlModalVisible = false;
     this.itemId = null;
     this.checkedCashArray = [];
+    this.needAddBtnConfig = {
+      needAdd: true,
+      needDel: true,
+    }
   }
 
 
@@ -72,7 +77,7 @@ export class CommodityCategoryComponent implements OnInit {
         {
           title: '操作',
           tdTemplate: this.operationTpl,
-          width: 150,
+          width: 30,
           fixed: true
         }
       ],

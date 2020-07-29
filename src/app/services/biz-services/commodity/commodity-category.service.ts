@@ -4,7 +4,6 @@ import {HttpClient} from "@angular/common/http";
 import {API_CONFIG} from "../../services.module";
 import {NzMessageService} from "ng-zorro-antd";
 import {Observable} from "rxjs";
-import {UserModel} from "../../../VO/user-model";
 import {PageInfo, SearchCommonVO} from "../../../VO/types";
 
 export interface CommodityModel {

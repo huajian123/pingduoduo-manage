@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {API_CONFIG} from '../../services.module';
 import {PageInfo} from '../../../VO/types';
 import {NzMessageService} from 'ng-zorro-antd';
-import {UserModel} from "../../../VO/user-model";
+import {UserModel} from "../../../VO/model";
 
 @Injectable({
   providedIn: 'root'

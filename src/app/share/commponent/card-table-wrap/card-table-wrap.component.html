@@ -4,8 +4,9 @@
 <ng-template #tableToolbar>
   <div class="ant-pro-table-toolbar">
     <div class="ant-pro-table-toolbar-title">查询表格</div>
-    <div class="ant-pro-table-toolbar-option" *ngIf="needAddBtn">
-      <button nz-button nzType="primary" (click)="addBtnClick()"><i nz-icon nzType="plus"></i>新建</button>
+    <div class="ant-pro-table-toolbar-option">
+      <button nz-button nzType="primary"  *ngIf="needAddBtnConfig.needAdd" (click)="addBtnClick()"><i nz-icon nzType="plus"></i>新建</button>
+      <button nz-button  *ngIf="needAddBtnConfig.needDel" (click)="delBtnClick()"><i nz-icon nzType="delete"></i>删除</button>
     </div>
     <div class="ant-pro-table-toolbar-default-option">
       <nz-divider nzType="vertical"></nz-divider>
@@ -14,7 +15,7 @@
           <i nz-icon nzType="column-width" nzTheme="outline"></i>
         </nz-space-item>
         <nz-space-item>
-          <i nz-icon nzType="fullscreen" nzTheme="outline"></i>
+          <i nz-icon nzType="fullscreen" nzTheme="outline" (click)="fullScreen()"></i>
         </nz-space-item>
         <nz-space-item>
           <i nz-icon nzType="setting" nzTheme="outline"></i>

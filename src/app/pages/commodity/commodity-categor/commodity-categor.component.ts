@@ -36,7 +36,7 @@ export class CommodityCategoryComponent implements OnInit {
 
 
   selectedChecked(e) {
-    this.checkedCashArray = [...e]
+    this.checkedCashArray = [...e];
   }
 
   update(id) {

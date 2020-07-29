@@ -30,8 +30,6 @@ export interface MyTableConfig {
 })
 export class AntTableComponent implements OnInit, OnChanges {
   _dataList: any[];
-  // 缓存当前页面checkbox选中的值
-  checkedDataArray: any[];
   // 从业务组件中传入的缓存的已经选中的checkbox数据数组
   @Input() checkedCashArrayFromComment: any[];
 
@@ -59,7 +57,6 @@ export class AntTableComponent implements OnInit, OnChanges {
   constructor() {
     this.indeterminate = false;
     this.allChecked = false;
-    this.checkedDataArray = [];
     this.selectedChange = new EventEmitter<any[]>();
     this.checkedCashArrayFromComment = [];
   }
@@ -84,39 +81,36 @@ export class AntTableComponent implements OnInit, OnChanges {
   }
 
 
-  public checkRowSingle(isChecked: boolean, selectIndex: number) {
-    this._dataList[selectIndex]['_checked']=isChecked;
-    const index = this.checkedCashArrayFromComment.findIndex((cashItem) => cashItem.id === this._dataList[selectIndex].id)
-    if(isChecked){
+  checkFn(dataItem, isChecked: boolean) {
+    dataItem['_checked'] = isChecked;
+    const index = this.checkedCashArrayFromComment.findIndex((cashItem) => cashItem.id === dataItem.id)
+    if (isChecked) {
       if (index === -1) {
-        this.checkedCashArrayFromComment.push(this._dataList[selectIndex]);
+        this.checkedCashArrayFromComment.push(dataItem);
       }
-    }else {
+    } else {
       if (index !== -1) {
         this.checkedCashArrayFromComment.splice(index, 1);
       }
     }
+  }
+
+  // 单选
+  public checkRowSingle(isChecked: boolean, selectIndex: number) {
+    this.checkFn(this._dataList[selectIndex], isChecked);
     this.selectedChange.emit(this.checkedCashArrayFromComment);
     this.refreshStatus();
   }
 
+  // 全选
   onAllChecked(isChecked: boolean): void {
     this._dataList.forEach((item) => {
-      item['_checked'] = isChecked;
-      const index = this.checkedCashArrayFromComment.findIndex((cashItem) => cashItem.id === item.id)
-      if (isChecked) {
-        if (index === -1) {
-          this.checkedCashArrayFromComment.push(item);
-        }
-      } else {
-        if (index !== -1) {
-          this.checkedCashArrayFromComment.splice(index, 1);
-        }
-      }
+      this.checkFn(item, isChecked);
     });
     this.selectedChange.emit(this.checkedCashArrayFromComment);
   }
 
+  // 刷新复选框状态
   refreshStatus() {
     this._dataList.forEach((item) => {
       const index = this.checkedCashArrayFromComment.findIndex((cashItem) => {
@@ -139,10 +133,7 @@ export class AntTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['checkedCashArrayFromComment']) {
-      this.checkedDataArray = [...changes['checkedCashArrayFromComment'].currentValue];
       this.refreshStatus();
     }
   }
-
-
 }

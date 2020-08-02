@@ -16,7 +16,6 @@ import {SearchListBtnConfig} from "../../../VO/model";
 })
 export class CommodityCategoryComponent implements OnInit {
   needAddBtnConfig: SearchListBtnConfig;
-  validateForm: FormGroup;
   addEditForm: FormGroup;
   tableConfig: MyTableConfig;
   isCollapse: boolean;
@@ -26,6 +25,7 @@ export class CommodityCategoryComponent implements OnInit {
   itemId: number;
   // 缓存已经选中的checkbox每一项
   checkedCashArray: any[];
+  filters: { name: string };
 
   constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService, private message: NzMessageService) {
     this.isCollapse = true;
@@ -36,7 +36,8 @@ export class CommodityCategoryComponent implements OnInit {
     this.needAddBtnConfig = {
       needAdd: true,
       needDel: true,
-    }
+    };
+    this.filters = {name: ''};
   }
 
 
@@ -52,6 +53,7 @@ export class CommodityCategoryComponent implements OnInit {
     this.htmlModalVisible = true;
   }
 
+
   del(id) {
     this.modal.confirm({
       nzTitle: '确定删除吗？',
@@ -65,6 +67,29 @@ export class CommodityCategoryComponent implements OnInit {
       nzCancelText: '取消',
     });
   }
+
+  batchDel() {
+    if (this.checkedCashArray.length < 1) {
+      this.message.error("请先勾选数据");
+      return;
+    }
+    this.modal.confirm({
+      nzTitle: '确定删除吗？',
+      nzOnOk: () => {
+        let ids = [];
+        this.checkedCashArray.forEach(({id}) => {
+          ids.push(id);
+        })
+        this.dataService.batchDelCommdityCategory(ids).subscribe(() => this.getDataList())
+      },
+      nzOkText: '确定',
+      nzOnCancel: () => {
+        return;
+      },
+      nzCancelText: '取消',
+    });
+  }
+
 
   private initTable(): void {
     this.tableConfig = {
@@ -95,24 +120,17 @@ export class CommodityCategoryComponent implements OnInit {
   }
 
 
-  batchDel() {
-  }
-
   /*新增*/
   addRow(): void {
   }
 
   /*重置*/
   resetForm(): void {
-    this.validateForm.reset();
+    this.filters = {name: ""};
+    this.getDataList();
   }
 
   initForm() {
-    this.validateForm = this.fb.group({
-      ruleName: [null],
-      desc: [null],
-    });
-
     this.addEditForm = this.fb.group({
       name: [null, [Validators.required]],
     });
@@ -127,7 +145,8 @@ export class CommodityCategoryComponent implements OnInit {
     this.tableConfig.loading = true;
     const params: SearchCommonVO<any> = {
       pageSize: this.tableConfig.pageSize,
-      pageNum: e?.pageIndex || this.tableConfig.pageIndex
+      pageNum: e?.pageIndex || this.tableConfig.pageIndex,
+      filters: this.filters,
     };
     this.dataList = [];
     this.dataService.getCommdityCategoryList(params).subscribe((data) => {

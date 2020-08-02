@@ -36,6 +36,10 @@ export class CommodityCategoryService extends BaseHttp {
     return this.post('/commodity/delCommodityCategory', {id: id}, {needSuccessInfo: true});
   }
 
+  public batchDelCommdityCategory(idArray: number[]): Observable<any> {
+    return this.post('/commodity/batchDelCommdityCategory', {idArray: idArray}, {needSuccessInfo: true});
+  }
+
   public getCommodityCategoryDetail(id: number): Observable<CommodityModel> {
     return this.post('/commodity/getCommodityCategoryDetail', {id: id});
   }

@@ -23,6 +23,13 @@ export class SidebarNavComponent implements OnInit, OnDestroy {
   routerPath = '';
   menus: Menu[] = [
     {
+      title: '首页',
+      icon: 'mail',
+      open: false,
+      selected: false,
+      path: '/hazard/home-page/home-page',
+    },
+    {
       title: '商品管理',
       icon: 'mail',
       open: false,

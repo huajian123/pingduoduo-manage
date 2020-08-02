@@ -13,8 +13,9 @@ const routes: Routes = [
     // canActivate: [SimpleGuard],
     children: [
       {
-        path: '', redirectTo: 'commodity-manage', pathMatch: 'full'
+        path: '', redirectTo: 'home-page', pathMatch: 'full'
       },
+      {path: 'home-page', loadChildren: () => import('./pages/workboard/workboard.module').then(m => m.WorkboardModule)},
       {path: 'commodity-manage', loadChildren: () => import('./pages/commodity/commodity.module').then(m => m.CommodityModule)},
     ],
   },

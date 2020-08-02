@@ -1,0 +1,52 @@
+<!--头部版块-->
+<nz-page-header class="site-page-header" nzTitle="商品种类表">
+  <nz-breadcrumb nz-page-header-breadcrumb>
+    <nz-breadcrumb-item>首页</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a>列表页</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>查询表格</nz-breadcrumb-item>
+  </nz-breadcrumb>
+</nz-page-header>
+
+<div class="normal-wrap">
+  <!--搜索板块-->
+  <form nz-form class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24}">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzFor]="">种类名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [ngModelOptions]="{standalone: true}" placeholder="请输入" [(ngModel)]="filters.name"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div  class="text-right">
+        <button nz-button (click)="getDataList()" [nzType]="'primary'"><i nz-icon nzType="search"></i>搜索</button>
+        <button nz-button (click)="resetForm()"><i nz-icon nzType="close-circle" nzTheme="outline"></i>重置</button>
+      </div>
+    </div>
+  </form>
+
+  <app-card-table-wrap (del)="batchDel()" [needAddBtnConfig]="needAddBtnConfig" (add)="add()">
+    <app-ant-table [checkedCashArrayFromComment]="checkedCashArray" (selectedChange)="selectedChecked($event)" (changePageSize)="changePageSize($event)" (changePageNum)="getDataList($event)"
+                   [tableConfig]="tableConfig" [tableData]="dataList"></app-ant-table>
+    <ng-template #operationTpl let-id="id">
+      <span class="operate-text" (click)="del(id)">删除</span>
+      <span class="operate-text" (click)="update(id)">修改</span>
+    </ng-template>
+  </app-card-table-wrap>
+</div>
+
+
+<nz-modal [(nzVisible)]="htmlModalVisible" nzTitle="新增编辑" (nzOnCancel)="htmlModalVisible=false"  [nzWidth]="500"  (nzOnOk)="handleOk()">
+  <form nz-form [formGroup]="addEditForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="4" nzFor="reviewStatus">种类名称</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzErrorTip="种类名称">
+        <input nz-input formControlName="name" placeholder="种类名称"/>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

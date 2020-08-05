@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit {
       filters: this.filters,
     };
     this.dataList = [];
-    this.dataService.getCommdityCategoryList(params).subscribe((data) => {
+   /* this.dataService.getCommdityCategoryList(params).subscribe((data) => {
       const {list, total, pageNum} = data;
       this.dataList = list;
       this.tableConfig.total = total;
@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit {
 
     }, () => {
       this.tableConfig.loading = false;
-    });
+    });*/
   }
 
   add() {

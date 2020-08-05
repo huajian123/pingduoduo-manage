@@ -9,6 +9,14 @@ import {PageInfo, SearchCommonVO} from "../../../VO/types";
 export interface CommodityModel {
   id?: number;
   name: string;
+  pid: number;
+  coverUrl?: string;
+  showState: number;
+  level: number;
+  leaf: number;
+  sort: number;
+  children?: CommodityModel[];
+  expand?: boolean;
 }
 
 @Injectable({
@@ -20,7 +28,7 @@ export class CommodityCategoryService extends BaseHttp {
     super(http, uri, message);
   }
 
-  public getCommdityCategoryList(params: SearchCommonVO<any>): Observable<PageInfo<CommodityModel>> {
+  public getCommdityCategoryList(params: { name: string, pid: number }): Observable<any[]> {
     return this.post('/commodity/queryCommodityCategory', params);
   }
 

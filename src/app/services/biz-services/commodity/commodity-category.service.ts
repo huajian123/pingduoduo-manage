@@ -17,6 +17,7 @@ export interface CommodityModel {
   sort: number;
   children?: CommodityModel[];
   expand?: boolean;
+  showChildren?: boolean;
 }
 
 @Injectable({

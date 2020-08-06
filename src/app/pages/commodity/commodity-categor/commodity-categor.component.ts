@@ -26,12 +26,11 @@ export class CommodityCategoryComponent implements OnInit {
   addRow(): void {
   }
 
-  findChild(pid,e) {
-    console.log(this.dataList);
-    console.log(pid);
-    const selData = this.dataList.find(({id}) => id === pid);
-    console.log(selData);
-    this.getDataList(pid, selData.children);
+  findChild(dataItem, e) {
+    console.log(e);
+    console.log(dataItem);
+    dataItem.showChildren = e;
+    this.getDataList(dataItem.id, dataItem.children);
   }
 
   getDataList(pid = 0, childrenArray: CommodityModel[]) {
@@ -43,15 +42,19 @@ export class CommodityCategoryComponent implements OnInit {
       data.forEach(item => {
         item.children = [];
         item.expand = false;
+        item.showChildren = false;
+
         const index = childrenArray.findIndex(({id}) => {
           return id === item.id
         });
+        console.log(index);
         if (index !== -1) return;
         childrenArray.push(item)
       })
     }, () => {
 
     });
+    console.log(this.dataList);
   }
 
 

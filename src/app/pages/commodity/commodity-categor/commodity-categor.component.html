@@ -17,7 +17,7 @@
         <td>{{firstLevel.sort}}</td>
       </tr>
       <ng-container *ngFor="let secondLevel of firstLevel.children">
-        <tr>
+        <tr *ngIf="firstLevel.showChildren">
           <td [nzIndentSize]="secondLevel.level! * 20">
             {{secondLevel.name}}
           </td>

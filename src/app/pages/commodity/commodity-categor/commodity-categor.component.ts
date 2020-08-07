@@ -1,13 +1,11 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MyTableConfig} from "../../../share/commponent/ant-table/ant-table.component";
-import {NzMessageService, NzModalService, NzTableQueryParams} from "ng-zorro-antd";
-import {SearchCommonVO} from "../../../VO/types";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {FormBuilder} from "@angular/forms";
+import {NzMessageService, NzModalService} from "ng-zorro-antd";
+
 import {
   CommodityCategoryService,
   CommodityModel
 } from "../../../services/biz-services/commodity/commodity-category.service";
-import {SearchListBtnConfig} from "../../../VO/model";
 
 @Component({
   selector: 'app-commodity-categor',
@@ -22,15 +20,33 @@ export class CommodityCategoryComponent implements OnInit {
     this.dataList = [];
   }
 
+
   /*新增*/
   addRow(): void {
   }
 
+  del(id){
+    console.log(id);
+  }
+
+  update(id){
+    console.log(id);
+
+  }
   findChild(dataItem, e) {
-    console.log(e);
-    console.log(dataItem);
     dataItem.showChildren = e;
+    if (dataItem.level === 1 && !e) {
+      dataItem.children.forEach(item => {
+        item.showChildren = false;
+        item.expand = false;
+      })
+    }
+    if (!e) return;
     this.getDataList(dataItem.id, dataItem.children);
+  }
+
+  myTrack(index, item) {
+    return item.id;
   }
 
   getDataList(pid = 0, childrenArray: CommodityModel[]) {
@@ -47,14 +63,13 @@ export class CommodityCategoryComponent implements OnInit {
         const index = childrenArray.findIndex(({id}) => {
           return id === item.id
         });
-        console.log(index);
         if (index !== -1) return;
         childrenArray.push(item)
       })
+      this.dataList = [...this.dataList];
     }, () => {
 
     });
-    console.log(this.dataList);
   }
 
 

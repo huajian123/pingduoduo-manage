@@ -1,13 +1,27 @@
-<nz-table #expandTable [nzData]="dataList" nzTableLayout="fixed">
+<nz-page-header class="site-page-header" nzTitle="商品种类表">
+  <nz-breadcrumb nz-page-header-breadcrumb>
+    <nz-breadcrumb-item>商品管理</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <a>商品种类</a>
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
+</nz-page-header>
+
+
+<nz-table nzSize="small"
+          [nzFrontPagination]="false"
+          nzBordered="true"
+          #expandTable [nzData]="dataList" nzTableLayout="fixed">
   <thead>
   <tr>
     <th>名称</th>
     <th>状态</th>
     <th>排序</th>
+    <th>操作</th>
   </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let firstLevel of dataList">
+  <ng-container *ngFor="let firstLevel of dataList;trackBy: myTrack;">
     <ng-container *ngIf="firstLevel.showState===1">
       <tr>
         <td [nzIndentSize]="firstLevel.level! * 20"  [(nzExpand)]="firstLevel.expand" (nzExpandChange)="findChild(firstLevel,$event)" [nzShowExpand]="firstLevel.leaf===0">
@@ -15,34 +29,36 @@
         </td>
         <td>{{firstLevel.showState}}</td>
         <td>{{firstLevel.sort}}</td>
+        <ng-container *ngTemplateOutlet="operationTpl;context:firstLevel"></ng-container>
       </tr>
-      <ng-container *ngFor="let secondLevel of firstLevel.children">
+      <ng-container *ngFor="let secondLevel of firstLevel.children;trackBy: myTrack;">
         <tr *ngIf="firstLevel.showChildren">
-          <td [nzIndentSize]="secondLevel.level! * 20">
+          <td [nzIndentSize]="secondLevel.level! * 20"  [(nzExpand)]="secondLevel.expand" (nzExpandChange)="findChild(secondLevel,$event)" [nzShowExpand]="secondLevel.leaf===0">
             {{secondLevel.name}}
           </td>
           <td>{{secondLevel.showState}}</td>
           <td>{{secondLevel.sort}}</td>
+          <ng-container *ngTemplateOutlet="operationTpl;context:secondLevel"></ng-container>
         </tr>
+        <ng-container *ngFor="let thirdLevel of secondLevel.children;trackBy: myTrack;">
+          <tr *ngIf="secondLevel.showChildren">
+            <td [nzIndentSize]="thirdLevel.level! * 20"  [(nzExpand)]="thirdLevel.expand" (nzExpandChange)="findChild(thirdLevel,$event)" [nzShowExpand]="thirdLevel.leaf===0">
+              {{thirdLevel.name}}
+            </td>
+            <td>{{thirdLevel.showState}}</td>
+            <td>{{thirdLevel.sort}}</td>
+            <ng-container *ngTemplateOutlet="operationTpl;context:thirdLevel"></ng-container>
+          </tr>
+        </ng-container>
       </ng-container>
-
     </ng-container>
   </ng-container>
-<!--  <ng-container *ngFor="let data of expandTable.data">
-    <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
-      <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
-        <td
-          [nzIndentSize]="item.level! * 20"
-          [nzShowExpand]="!!item.children"
-          [(nzExpand)]="item.expand"
-          (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
-        >
-          {{ item.name }}
-        </td>
-        <td>{{ item.age }}</td>
-        <td>{{ item.address }}</td>
-      </tr>
-    </ng-container>
-  </ng-container>-->
+  <ng-template #operationTpl let-id="id">
+    <td>
+      <span class="operate-text" (click)="del(id)">删除</span>
+      <span class="operate-text" (click)="update(id)">修改</span>
+    </td>
+
+  </ng-template>
   </tbody>
 </nz-table>

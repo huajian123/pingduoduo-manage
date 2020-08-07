@@ -7,58 +7,117 @@
   </nz-breadcrumb>
 </nz-page-header>
 
+<div class="normal-wrap">
+  <!--搜索板块-->
+  <form nz-form class="ant-advanced-search-form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24}">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzFor]="">种类名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [ngModelOptions]="{standalone: true}" placeholder="请输入" [(ngModel)]="filters.name"/>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
 
-<nz-table nzSize="small"
-          [nzFrontPagination]="false"
-          nzBordered="true"
-          #expandTable [nzData]="dataList" nzTableLayout="fixed">
-  <thead>
-  <tr>
-    <th>名称</th>
-    <th>状态</th>
-    <th>排序</th>
-    <th>操作</th>
-  </tr>
-  </thead>
-  <tbody>
-  <ng-container *ngFor="let firstLevel of dataList;trackBy: myTrack;">
-    <ng-container *ngIf="firstLevel.showState===1">
+      <div  class="text-right">
+        <button nz-button [nzType]="'primary'"><i nz-icon nzType="search"></i>搜索</button>
+        <button nz-button ><i nz-icon nzType="close-circle" nzTheme="outline"></i>重置</button>
+      </div>
+    </div>
+  </form>
+
+  <app-card-table-wrap [needAddBtnConfig]="needAddBtnConfig" (add)="add()">
+    <nz-table nzSize="small"
+              [nzFrontPagination]="false"
+              nzBordered="true"
+              #expandTable [nzData]="dataList" nzTableLayout="fixed">
+      <thead>
       <tr>
-        <td [nzIndentSize]="firstLevel.level! * 20"  [(nzExpand)]="firstLevel.expand" (nzExpandChange)="findChild(firstLevel,$event)" [nzShowExpand]="firstLevel.leaf===0">
-          {{firstLevel.name}}{{firstLevel.leaf}}
-        </td>
-        <td>{{firstLevel.showState}}</td>
-        <td>{{firstLevel.sort}}</td>
-        <ng-container *ngTemplateOutlet="operationTpl;context:firstLevel"></ng-container>
+        <th>名称</th>
+        <th>状态</th>
+        <th>排序</th>
+        <th>操作</th>
       </tr>
-      <ng-container *ngFor="let secondLevel of firstLevel.children;trackBy: myTrack;">
-        <tr *ngIf="firstLevel.showChildren">
-          <td [nzIndentSize]="secondLevel.level! * 20"  [(nzExpand)]="secondLevel.expand" (nzExpandChange)="findChild(secondLevel,$event)" [nzShowExpand]="secondLevel.leaf===0">
-            {{secondLevel.name}}
-          </td>
-          <td>{{secondLevel.showState}}</td>
-          <td>{{secondLevel.sort}}</td>
-          <ng-container *ngTemplateOutlet="operationTpl;context:secondLevel"></ng-container>
-        </tr>
-        <ng-container *ngFor="let thirdLevel of secondLevel.children;trackBy: myTrack;">
-          <tr *ngIf="secondLevel.showChildren">
-            <td [nzIndentSize]="thirdLevel.level! * 20"  [(nzExpand)]="thirdLevel.expand" (nzExpandChange)="findChild(thirdLevel,$event)" [nzShowExpand]="thirdLevel.leaf===0">
-              {{thirdLevel.name}}
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let firstLevel of dataList;trackBy: myTrack;">
+        <ng-container *ngIf="firstLevel.showState===1">
+          <tr>
+            <td [nzIndentSize]="firstLevel.level! * 20"  [(nzExpand)]="firstLevel.expand" (nzExpandChange)="findChild(firstLevel,$event)" [nzShowExpand]="firstLevel.leaf===0">
+              {{firstLevel.name}}{{firstLevel.leaf}}
             </td>
-            <td>{{thirdLevel.showState}}</td>
-            <td>{{thirdLevel.sort}}</td>
-            <ng-container *ngTemplateOutlet="operationTpl;context:thirdLevel"></ng-container>
+            <td>{{firstLevel.showState}}</td>
+            <td>{{firstLevel.sort}}</td>
+            <ng-container *ngTemplateOutlet="operationTpl;context:firstLevel"></ng-container>
           </tr>
+          <ng-container *ngFor="let secondLevel of firstLevel.children;trackBy: myTrack;">
+            <tr *ngIf="firstLevel.showChildren">
+              <td [nzIndentSize]="secondLevel.level! * 20"  [(nzExpand)]="secondLevel.expand" (nzExpandChange)="findChild(secondLevel,$event)" [nzShowExpand]="secondLevel.leaf===0">
+                {{secondLevel.name}}
+              </td>
+              <td>{{secondLevel.showState}}</td>
+              <td>{{secondLevel.sort}}</td>
+              <ng-container *ngTemplateOutlet="operationTpl;context:secondLevel"></ng-container>
+            </tr>
+            <ng-container *ngFor="let thirdLevel of secondLevel.children;trackBy: myTrack;">
+              <tr *ngIf="secondLevel.showChildren">
+                <td [nzIndentSize]="thirdLevel.level! * 20"  [(nzExpand)]="thirdLevel.expand" (nzExpandChange)="findChild(thirdLevel,$event)" [nzShowExpand]="thirdLevel.leaf===0">
+                  {{thirdLevel.name}}
+                </td>
+                <td>{{thirdLevel.showState}}</td>
+                <td>{{thirdLevel.sort}}</td>
+                <ng-container *ngTemplateOutlet="operationTpl;context:thirdLevel"></ng-container>
+              </tr>
+            </ng-container>
+          </ng-container>
         </ng-container>
       </ng-container>
-    </ng-container>
-  </ng-container>
-  <ng-template #operationTpl let-id="id">
-    <td>
-      <span class="operate-text" (click)="del(id)">删除</span>
-      <span class="operate-text" (click)="update(id)">修改</span>
-    </td>
+      </tbody>
+    </nz-table>
+    <ng-template #operationTpl let-id="id">
+      <td>
+        <span class="operate-text" (click)="del(id)">删除</span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span class="operate-text" (click)="update(id)">修改</span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span class="operate-text" (click)="update(id)">添加下级</span>
+      </td>
+    </ng-template>
+  </app-card-table-wrap>
+</div>
 
+
+<nz-modal [(nzVisible)]="htmlModalVisible" nzTitle="新增编辑" (nzOnCancel)="htmlModalVisible=false"  [nzWidth]="500"  (nzOnOk)="handleOk()">
+  <form nz-form [formGroup]="addEditForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="4" nzFor="reviewStatus">种类名称</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzErrorTip="种类名称">
+        <input nz-input formControlName="name" placeholder="种类名称"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="4" nzFor="reviewStatus">分类图片</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzErrorTip="种类名称">
+        <nz-upload
+          nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzShowButton]="fileList.length < 8"
+          [nzPreview]="handlePreview"
+        >
+          <i nz-icon class="plus" nzType="plus"></i>
+          <div class="ant-upload-text">Upload</div>
+        </nz-upload>
+
+        <input nz-input formControlName="name" placeholder="种类名称"/>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</nz-modal>
+<nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible = false">
+  <ng-template #modalContent>
+    <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
   </ng-template>
-  </tbody>
-</nz-table>
+</nz-modal>

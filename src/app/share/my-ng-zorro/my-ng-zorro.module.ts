@@ -20,7 +20,7 @@ import {
   NzBadgeModule,
   NzSelectModule,
   NzMessageModule,
-  NzModalModule,
+  NzModalModule, NzUploadModule,
 } from 'ng-zorro-antd';
 import {NzSpaceModule} from 'ng-zorro-antd/space';
 
@@ -48,7 +48,8 @@ import {NzSpaceModule} from 'ng-zorro-antd/space';
     NzTypographyModule,
     NzBadgeModule,
     NzMessageModule,
-    NzModalModule
+    NzModalModule,
+    NzUploadModule
   ],
   exports: [
     NzFormModule,
@@ -72,7 +73,8 @@ import {NzSpaceModule} from 'ng-zorro-antd/space';
     NzBadgeModule,
     NzSelectModule,
     NzMessageModule,
-    NzModalModule
+    NzModalModule,
+    NzUploadModule,
   ]
 })
 export class MyNgZorroModule {

@@ -1,11 +1,21 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
-import {NzMessageService, NzModalService} from "ng-zorro-antd";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NzMessageService, NzModalService, NzUploadFile} from "ng-zorro-antd";
 
 import {
   CommodityCategoryService,
   CommodityModel
 } from "../../../services/biz-services/commodity/commodity-category.service";
+import {SearchListBtnConfig} from "../../../VO/model";
+
+function getBase64(file: File): Promise<string | ArrayBuffer | null> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
 
 @Component({
   selector: 'app-commodity-categor',
@@ -13,16 +23,72 @@ import {
   styleUrls: ['./commodity-categor.component.less']
 })
 export class CommodityCategoryComponent implements OnInit {
-
+  needAddBtnConfig: SearchListBtnConfig;
   dataList: CommodityModel[];
+  filters: { name: string };
 
+  htmlModalVisible: boolean;
+  addEditForm: FormGroup;
+
+
+  fileList: NzUploadFile[] = [
+    {
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: '-2',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: '-3',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: '-4',
+      name: 'image.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: '-5',
+      name: 'image.png',
+      status: 'error'
+    }
+  ];
+
+
+  previewImage: string | undefined = '';
+  previewVisible = false;
   constructor(private fb: FormBuilder, private dataService: CommodityCategoryService, private modal: NzModalService, private message: NzMessageService) {
     this.dataList = [];
+    this.needAddBtnConfig = {
+      needAdd: true,
+      needDel: true,
+    };
+    this.filters = {name: ''};
+
+    this.htmlModalVisible = false;
   }
 
+  handlePreview = async (file: NzUploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj!);
+    }
+    this.previewImage = file.url || file.preview;
+    this.previewVisible = true;
+  };
 
   /*新增*/
-  addRow(): void {
+  add(): void {
+    this.addEditForm.reset();
+    this.htmlModalVisible = true;
   }
 
   del(id){
@@ -72,8 +138,26 @@ export class CommodityCategoryComponent implements OnInit {
     });
   }
 
+  initForm() {
+    this.addEditForm = this.fb.group({
+      name: [null, [Validators.required]],
+    });
+  }
+
+  handleOk() {
+    Object.keys(this.addEditForm.controls).forEach(key => {
+      this.addEditForm.controls[key].markAsDirty();
+      this.addEditForm.controls[key].updateValueAndValidity();
+    });
+    if (this.addEditForm.invalid) {
+      return;
+    }
+    const param = this.addEditForm.getRawValue();
+    console.log(param);
+  }
 
   ngOnInit(): void {
+    this.initForm();
     this.getDataList(0, this.dataList)
   }
 }

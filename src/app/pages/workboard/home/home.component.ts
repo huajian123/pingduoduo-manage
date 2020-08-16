@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   tableConfig: MyTableConfig;
   isCollapse: boolean;
   @ViewChild('operationTpl', {static: true}) operationTpl: TemplateRef<any>;
-  dataList: CommodityModel[];
+  dataList: any[];
   htmlModalVisible: boolean;
   itemId: number;
   // 缓存已经选中的checkbox每一项
@@ -142,24 +142,24 @@ export class HomeComponent implements OnInit {
   }
 
   getDataList(e?: NzTableQueryParams) {
-    this.tableConfig.loading = true;
+    // this.tableConfig.loading = true;
     const params: SearchCommonVO<any> = {
       pageSize: this.tableConfig.pageSize,
       pageNum: e?.pageIndex || this.tableConfig.pageIndex,
       filters: this.filters,
     };
-    this.dataList = [];
-   /* this.dataService.getCommdityCategoryList(params).subscribe((data) => {
-      const {list, total, pageNum} = data;
-      this.dataList = list;
-      this.tableConfig.total = total;
-      this.tableConfig.pageIndex = pageNum;
-      this.tableConfig.loading = false;
-      this.checkedCashArray = [...this.checkedCashArray];
+    this.dataList = [{id:1,name: '1'},{id:2,name: '2'},{id:3,name: '3'},{id:4,name: '4'},{id:5,name: '5'},{id:6,name: '6'},{id:7,name: '7'},{id:8,name: '8'},{id:9,name: '9'},];
+    /* this.dataService.getCommdityCategoryList(params).subscribe((data) => {
+       const {list, total, pageNum} = data;
+       this.dataList = list;
+       this.tableConfig.total = total;
+       this.tableConfig.pageIndex = pageNum;
+       this.tableConfig.loading = false;
+       this.checkedCashArray = [...this.checkedCashArray];
 
-    }, () => {
-      this.tableConfig.loading = false;
-    });*/
+     }, () => {
+       this.tableConfig.loading = false;
+     });*/
   }
 
   add() {
@@ -194,6 +194,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.initTable();
-    this.tableConfig.loading = true;
+    // this.tableConfig.loading = true;
   }
 }
